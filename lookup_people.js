@@ -29,6 +29,6 @@ function connect(name, callback) {
 connect(input, (resultList) => {
   console.log(`Found ${resultList.length} person(s) by the name '${input}':`);
   for(var i = 0; i < resultList.length; i++) {
-    console.log(`-  ${[i + 1]}: ${resultList[i].first_name} ${resultList[i].last_name}, born '${resultList[i].birthdate}'`);
+    console.log(`- ${[i + 1]}: ${resultList[i].first_name} ${resultList[i].last_name}, born '${resultList[i].birthdate}'`);
   };
 });
