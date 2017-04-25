@@ -31,5 +31,4 @@ connect(input, (resultList) => {
   for(var i = 0; i < resultList.length; i++) {
     console.log(`-  ${[i + 1]}: ${resultList[i].first_name} ${resultList[i].last_name}, born '${resultList[i].birthdate}'`);
   };
-  client.end();
 });
