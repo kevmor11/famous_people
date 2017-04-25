@@ -8,16 +8,28 @@ const client = new pg.Client({
   port: 5432 //env var: PGPORT
 });
 
-client.connect((err) => {
-  if (err) {
-    return console.error("Connection Error", err);
-  }
-  client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR last_name = $1::text", [process.argv[2]], (err, result) => {
+const input = process.argv[2];
+
+function connect(name, callback) {
+  client.connect((err) => {
     if (err) {
-      return console.error("error running query", err);
+      return console.error("Connection Error", err);
     }
-    // console.log(result);
-    console.log(result.rows); //output: 1
-    client.end();
+    console.log('Searching ...');
+    client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR last_name = $1::text", [input], (err, result) => {
+      if (err) {
+        return console.error("error running query", err);
+      }
+      callback(result.rows);
+      client.end();
+    });
   });
+}
+
+connect(input, function (resultList) {
+  console.log(`Found ${resultList.length} person(s) by the name '${input}':`);
+  for(var i = 0; i < resultList.length; i++) {
+    console.log(`-  ${[i + 1]}: ${resultList[i].first_name} ${resultList[i].last_name}, born '${resultList[i].birthdate}'`);
+  };
+  client.end();
 });
