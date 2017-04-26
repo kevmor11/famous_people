@@ -1,22 +1,22 @@
+const settings = require('./settings');
+
 // Update with your config settings.
 
 module.exports = {
 
+  development: {
+    client: 'pg',
+    connection: settings
+  },
+
   // development: {
   //   client: 'pg',
   //   connection: {
-  //     filename: './dev.pg',
+  //     database: 'vagrant',
+  //     user:     'development',
+  //     password: 'development'
   //   }
   // },
-
-  development: {
-    client: 'pg',
-    connection: {
-      database: 'vagrant',
-      user:     'development',
-      password: 'development'
-    }
-  },
 
   staging: {
     client: 'postgresql',
