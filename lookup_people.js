@@ -1,28 +1,16 @@
-const pg = require("pg");
-
-const client = new pg.Client({
-  user: 'development', //env var: PGUSER
-  database: 'vagrant', //env var: PGDATABASE
-  password: 'development', //env var: PGPASSWORD
-  host: 'localhost', // Server hosting the postgres database
-  port: 5432 //env var: PGPORT
-});
+const knex = require('./dataHelpers.js');
 
 const input = process.argv[2];
 
 function connect(name, callback) {
-  client.connect((err) => {
+  console.log('Searching ...');
+  knex.select().from('famous_people').whereIn('first_name', input).orWhereIn('last_name', input)
+  .asCallback(function(err, result) {
     if (err) {
       return console.error("Connection Error", err);
     }
-    console.log('Searching ...');
-    client.query("SELECT * FROM famous_people WHERE first_name = $1::text OR last_name = $1::text", [input], (err, result) => {
-      if (err) {
-        return console.error("error running query", err);
-      }
-      callback(result.rows);
-      client.end();
-    });
+    callback(result);
+    knex.destroy();
   });
 }
 
